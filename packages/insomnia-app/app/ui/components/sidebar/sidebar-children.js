@@ -40,6 +40,7 @@ class SidebarChildren extends React.PureComponent<Props> {
   _renderChildren(children: Array<Child>) {
     const {
       filter,
+      handleGroupRunner,
       handleCreateRequest,
       handleCreateRequestGroup,
       handleSetRequestGroupCollapsed,
@@ -107,6 +108,7 @@ class SidebarChildren extends React.PureComponent<Props> {
           filter={filter || ''}
           isActive={isActive}
           moveDoc={moveDoc}
+          handleGroupRunner={handleGroupRunner}
           handleActivateRequest={handleActivateRequest}
           handleSetRequestGroupCollapsed={handleSetRequestGroupCollapsed}
           handleDuplicateRequestGroup={handleDuplicateRequestGroup}

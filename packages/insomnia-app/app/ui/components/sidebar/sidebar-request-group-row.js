@@ -52,6 +52,7 @@ class SidebarRequestGroupRow extends PureComponent {
       handleCreateRequestGroup,
       handleDuplicateRequestGroup,
       handleMoveRequestGroup,
+      handleGroupRunner,
       isDragging,
       isDraggingOver,
       workspace,
@@ -93,6 +94,7 @@ class SidebarRequestGroupRow extends PureComponent {
           <div className="sidebar__actions">
             <RequestGroupActionsDropdown
               ref={this._setRequestGroupActionsDropdownRef}
+              handleGroupRunner={handleGroupRunner}
               handleCreateRequest={handleCreateRequest}
               handleCreateRequestGroup={handleCreateRequestGroup}
               handleDuplicateRequestGroup={handleDuplicateRequestGroup}

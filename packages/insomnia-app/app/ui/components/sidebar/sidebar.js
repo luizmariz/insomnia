@@ -49,6 +49,7 @@ class Sidebar extends PureComponent {
       handleMoveRequestGroup,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleGroupRunner,
       handleCreateRequestGroup,
       handleSetRequestGroupCollapsed,
       moveDoc,
@@ -119,6 +120,7 @@ class Sidebar extends PureComponent {
           handleDuplicateRequest={handleDuplicateRequest}
           handleDuplicateRequestGroup={handleDuplicateRequestGroup}
           handleMoveRequestGroup={handleMoveRequestGroup}
+          handleGroupRunner={handleGroupRunner}
           handleGenerateCode={handleGenerateCode}
           handleCopyAsCurl={handleCopyAsCurl}
           moveDoc={moveDoc}

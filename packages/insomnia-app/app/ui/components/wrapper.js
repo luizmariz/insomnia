@@ -27,6 +27,7 @@ import ResponseDebugModal from './modals/response-debug-modal';
 import PaymentNotificationModal from './modals/payment-notification-modal';
 import NunjucksModal from './modals/nunjucks-modal';
 import PromptModal from './modals/prompt-modal';
+import RunnerRequestGroupModal from './modals/runner-request-group-modal';
 import AskModal from './modals/ask-modal';
 import SelectModal from './modals/select-modal';
 import RequestCreateModal from './modals/request-create-modal';
@@ -390,6 +391,7 @@ class Wrapper extends React.PureComponent<Props, State> {
       handleGenerateCodeForActiveRequest,
       handleGenerateCode,
       handleCopyAsCurl,
+      handleGroupRunner,
       handleUpdateRequestMimeType,
       isLoading,
       loadStartTime,
@@ -486,6 +488,7 @@ class Wrapper extends React.PureComponent<Props, State> {
           />
 
           <MoveRequestGroupModal ref={registerModal} workspaces={workspaces} />
+          <RunnerRequestGroupModal ref={registerModal} workspaces={workspaces} />
 
           <WorkspaceSettingsModal
             ref={registerModal}
@@ -623,6 +626,7 @@ class Wrapper extends React.PureComponent<Props, State> {
             activeEnvironment={activeEnvironment}
             handleCreateRequest={handleCreateRequest}
             handleCreateRequestGroup={handleCreateRequestGroup}
+            handleGroupRunner={handleGroupRunner}
             filter={sidebarFilter || ''}
             hidden={sidebarHidden || false}
             workspace={activeWorkspace}

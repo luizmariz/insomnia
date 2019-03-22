@@ -66,6 +66,7 @@ import * as plugins from '../../plugins';
 import * as templating from '../../templating/index';
 import AskModal from '../components/modals/ask-modal';
 import { updateMimeType } from '../../models/request';
+import RunnerRequestGroupModal from '../components/modals/runner-request-group-modal';
 import MoveRequestGroupModal from '../components/modals/move-request-group-modal';
 import * as themes from '../../plugins/misc';
 
@@ -253,6 +254,10 @@ class App extends PureComponent {
 
   async _requestGroupDuplicate(requestGroup) {
     models.requestGroup.duplicate(requestGroup);
+  }
+
+  async _requestGroupRunner(requestGroup) {
+    showModal(RunnerRequestGroupModal, { requestGroup });
   }
 
   async _requestGroupMove(requestGroup) {
@@ -999,6 +1004,7 @@ class App extends PureComponent {
               handleMoveRequestGroup={this._requestGroupMove}
               handleDuplicateWorkspace={this._workspaceDuplicate}
               handleCreateRequestGroup={this._requestGroupCreate}
+              handleGroupRunner={this._requestGroupRunner}
               handleGenerateCode={this._handleGenerateCode}
               handleGenerateCodeForActiveRequest={this._handleGenerateCodeForActiveRequest}
               handleCopyAsCurl={this._handleCopyAsCurl}

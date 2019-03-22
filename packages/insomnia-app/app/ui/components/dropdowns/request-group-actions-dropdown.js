@@ -56,6 +56,10 @@ class RequestGroupActionsDropdown extends PureComponent {
     showModal(EnvironmentEditModal, this.props.requestGroup);
   }
 
+  _handleGroupRunner() {
+    this.props.handleGroupRunner(this.props.requestGroup);
+  }
+
   show() {
     this._dropdown.show();
   }
@@ -72,6 +76,9 @@ class RequestGroupActionsDropdown extends PureComponent {
         <DropdownButton>
           <i className="fa fa-caret-down" />
         </DropdownButton>
+        <DropdownItem onClick={this._handleGroupRunner}>
+          <i className="fa fa-play" /> Runner
+        </DropdownItem>
         <DropdownItem onClick={this._handleRequestCreate}>
           <i className="fa fa-plus-circle" /> New Request
           <DropdownHint keyBindings={hotKeyRegistry[hotKeyRefs.REQUEST_SHOW_CREATE.id]} />
