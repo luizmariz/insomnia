@@ -6,6 +6,7 @@ import * as _oAuth2Token from './o-auth-2-token';
 import * as _pluginData from './plugin-data';
 import * as _request from './request';
 import * as _requestGroup from './request-group';
+import * as _requestScript from './request-script';
 import * as _requestGroupMeta from './request-group-meta';
 import * as _requestMeta from './request-meta';
 import * as _requestVersion from './request-version';
@@ -32,6 +33,7 @@ export const oAuth2Token = _oAuth2Token;
 export const pluginData = _pluginData;
 export const request = _request;
 export const requestGroup = _requestGroup;
+export const requestScript = _requestScript;
 export const requestGroupMeta = _requestGroupMeta;
 export const requestMeta = _requestMeta;
 export const requestVersion = _requestVersion;
@@ -50,6 +52,7 @@ export function all() {
     environment,
     cookieJar,
     requestGroup,
+    requestScript,
     requestGroupMeta,
     request,
     requestVersion,

@@ -488,7 +488,15 @@ class Wrapper extends React.PureComponent<Props, State> {
           />
 
           <MoveRequestGroupModal ref={registerModal} workspaces={workspaces} />
-          <RunnerRequestGroupModal ref={registerModal} workspaces={workspaces} />
+
+          <RunnerRequestGroupModal
+            ref={registerModal}
+            handleSendRequestWithEnvironment={this.props.handleSendRequestWithEnvironment}
+            activeEnvironment={this.props.activeEnvironment}
+            activeRequest={this.props.activeRequest}
+            activeResponse={this.props.activeResponse}
+            workspaces={this.props.workspaces}
+          />
 
           <WorkspaceSettingsModal
             ref={registerModal}

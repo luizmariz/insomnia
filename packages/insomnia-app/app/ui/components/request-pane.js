@@ -16,6 +16,7 @@ import ContentTypeDropdown from './dropdowns/content-type-dropdown';
 import AuthDropdown from './dropdowns/auth-dropdown';
 import KeyValueEditor from './key-value-editor/editor';
 import RequestHeadersEditor from './editors/request-headers-editor';
+import RequestScriptEditor from './editors/request-script-editor';
 import RenderedQueryString from './rendered-query-string';
 import BodyEditor from './editors/body/body-editor';
 import AuthWrapper from './editors/auth/auth-wrapper';
@@ -31,6 +32,7 @@ import MarkdownPreview from './markdown-preview';
 import type { Settings } from '../../models/settings';
 import ErrorBoundary from './error-boundary';
 import { hotKeyRefs } from '../../common/hotkeys';
+import { Script } from 'vm';
 
 type Props = {
   // Functions
@@ -68,6 +70,13 @@ type Props = {
 
 @autobind
 class RequestPane extends React.PureComponent<Props> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scriptValue: ' ',
+    };
+  }
+
   _handleEditDescriptionAdd() {
     this._handleEditDescription(true);
   }
@@ -140,6 +149,23 @@ class RequestPane extends React.PureComponent<Props> {
     if (url !== request.url) {
       forceUpdateRequest(request, { url, parameters });
     }
+  }
+
+  _updateRequestScriptValue(value) {
+    this.setState(prev => ({ scriptValue: value }));
+  }
+
+  _handleUpdateRequestScript() {
+    const { request } = this.props;
+    const { scriptValue } = this.state;
+
+    models.requestScript.findByParentId(request._id).then(res => {
+      if (res.length === 0) {
+        models.requestScript.create({ script: scriptValue, parentId: request._id });
+      } else {
+        models.requestScript.update(res[0], { script: scriptValue });
+      }
+    });
   }
 
   render() {
@@ -305,6 +331,16 @@ class RequestPane extends React.PureComponent<Props> {
                 )}
               </button>
             </Tab>
+            <Tab tabIndex="-1">
+              <button>
+                Script
+                {request.description && (
+                  <span className="bubble space-left">
+                    <i className="fa fa--skinny fa-check txt-xxs" />
+                  </span>
+                )}
+              </button>
+            </Tab>
           </TabList>
           <TabPanel key={uniqueKey} className="react-tabs__tab-panel editor-wrapper">
             <BodyEditor
@@ -436,6 +472,19 @@ class RequestPane extends React.PureComponent<Props> {
                 </p>
               </div>
             )}
+          </TabPanel>
+          <TabPanel className="react-tabs__tab-panel header-editor">
+            <ErrorBoundary key={uniqueKey} errorClassName="font-error pad text-center">
+              <RequestScriptEditor onChange={this._updateRequestScriptValue} request={request} />
+            </ErrorBoundary>
+
+            <div className="pad-right text-right">
+              <button
+                className="margin-top-sm btn btn--clicky"
+                onClick={this._handleUpdateRequestScript}>
+                Save
+              </button>
+            </div>
           </TabPanel>
         </Tabs>
       </section>

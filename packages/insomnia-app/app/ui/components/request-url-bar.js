@@ -169,7 +169,7 @@ class RequestUrlBar extends React.PureComponent<Props, State> {
     // XXX this._handleStopInterval(); XXX
 
     this._handleStopTimeout();
-
+    console.log(this.state.url);
     const { downloadPath } = this.state;
     if (downloadPath) {
       this.props.handleSendAndDownload(downloadPath);
