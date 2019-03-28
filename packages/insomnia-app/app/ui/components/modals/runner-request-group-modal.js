@@ -11,12 +11,10 @@ import * as models from '../../../models';
 import HelpTooltip from '../help-tooltip';
 import { all } from '../../../models/request';
 import { getLatestForRequest } from '../../../models/response';
-import StatusTag from '../tags/status-tag';
-import URLTag from '../tags/url-tag';
-import TimeTag from '../tags/time-tag';
-import SizeTag from '../tags/size-tag';
 import { DropdownItem } from '../base/dropdown';
+import RunnerTestLogDropdown from '../dropdowns/runner-test-log-dropdown';
 import iconv from 'iconv-lite';
+import In from '../../../in';
 
 type Props = {
   workspaces: Array<Workspace>,
@@ -72,7 +70,7 @@ class RunnerRequestGroupModal extends React.PureComponent<Props, State> {
   }
 
   _handleSendRequestsWithActiveEnvironment(): void {
-    this.setState(prev => ({ responses: [] }));
+    this.setState(prev => ({ responses: [], passed: 0, failed: 0 }));
     all().then(res => {
       const { activeEnvironment, handleSendRequestWithEnvironment } = this.props;
       const { requestGroup } = this.state;
@@ -87,8 +85,8 @@ class RunnerRequestGroupModal extends React.PureComponent<Props, State> {
             this._handleTests(response, request).then(test => {
               this.setState(prev => ({
                 responses: [...prev.responses, { response, test }],
-                passed: test ? prev.passed + 1 : prev.passed,
-                failed: test ? prev.failed : prev.failed + 1,
+                passed: test.status ? prev.passed + 1 : prev.passed,
+                failed: test.status ? prev.failed : prev.failed + 1,
               }));
             });
           }
@@ -105,26 +103,22 @@ class RunnerRequestGroupModal extends React.PureComponent<Props, State> {
       const match = response.contentType.match(/charset=([\w-]+)/);
       const charset = match && match.length >= 2 ? match[1] : 'utf-8';
       const body = JSON.parse(this._decodeIconv(bodyBuffer, charset));
-      console.log(body, tests);
+      response = { ...response, body: body };
+      const i = new In();
 
-      return true;
+      eval(tests.script);
+
+      let allTestsPassed = true;
+      i.getTests().forEach(test => {
+        if (!test.result) {
+          allTestsPassed = false;
+        }
+      });
+
+      return { status: allTestsPassed, tests: i.getTests() };
     } else {
-      return true;
+      return { status: true, tests: [] };
     }
-  }
-
-  renderResponseItem(response) {
-    return (
-      <div key={response.response.url} style={{ paddingBottom: 10 }}>
-        <StatusTag
-          statusCode={response.response.statusCode}
-          statusMessage={response.response.statusMessage || null}
-        />
-        <URLTag url={response.response.url} />
-        <TimeTag milliseconds={response.response.elapsedTime} />
-        <SizeTag bytesRead={response.response.bytesRead} bytesContent={response.bytesContent} />
-      </div>
-    );
   }
 
   render() {
@@ -139,7 +133,9 @@ class RunnerRequestGroupModal extends React.PureComponent<Props, State> {
               Request Group Runner&nbsp;
               <HelpTooltip>Runner allows you to run your test cases</HelpTooltip>
             </label>
-            <DropdownItem>{responses.map(this.renderResponseItem)}</DropdownItem>
+            <DropdownItem>
+              {responses.map(response => <RunnerTestLogDropdown response={response} />)}
+            </DropdownItem>
           </div>
         </ModalBody>
         <ModalFooter key="footer">
