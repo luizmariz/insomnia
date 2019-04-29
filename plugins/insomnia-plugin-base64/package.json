@@ -9,6 +9,7 @@
     "url": "https://github.com/getinsomnia/insomnia"
   },
   "main": "index.js",
+  "dependencies": {},
   "insomnia": {
     "name": "base64",
     "description": "Encode/Decode base64 strings"
